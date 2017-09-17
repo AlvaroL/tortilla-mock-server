@@ -1,10 +1,7 @@
 const koa = require('koa');
+const login = require('./middlewares/login').login;
 
 const app = new koa();
-
-const login = (ctx) => {
-    ctx.body = 'login';
-};
 
 const error = (ctx) => {
     const err = new Error(`Bad request or mock not implemented for ${ctx.request.originalUrl} method: ${ctx.req.method}`);
