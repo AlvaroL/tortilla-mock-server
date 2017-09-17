@@ -10,5 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "koa": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-register": "^6.26.0"
   }
 }
