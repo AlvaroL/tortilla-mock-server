@@ -7,7 +7,10 @@ const login = (ctx) => {
 };
 
 const error = (ctx) => {
-    ctx.body = `Bad request or mock not implemented for ${ctx.request.originalUrl} method: ${ctx.req.method}`;
+    const err = new Error(`Bad request or mock not implemented for ${ctx.request.originalUrl} method: ${ctx.req.method}`);
+    err.status = 404;
+    err.expose = true;
+    throw err;
 };
 
 const URL_MAPPER = {
@@ -15,13 +18,13 @@ const URL_MAPPER = {
     'default': error
 };
 
-const getToken = ctx => ctx.request.originalUrl.split('/')[1] || 'default';
+const getToken = originalUrl => originalUrl.split('/')[1] || 'default';
+
+const getMethod = ctx => URL_MAPPER[getToken(ctx.request.originalUrl)] || URL_MAPPER['default'];
 
 app.use((ctx) => {
-    console.log(getToken(ctx));
-    const method = URL_MAPPER[getToken(ctx)];
+    const method = getMethod(ctx);
     method && method(ctx);
-    console.log(method);
 });
 
 app.listen(3000);
